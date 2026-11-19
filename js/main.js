@@ -77,7 +77,7 @@
   var wa = $('#wa');
   if (wa) wa.addEventListener('click', function () {
     var n = (wa.dataset.w || '').replace(/\D/g, '');
-    if (n) { window.open('https://wa.me/' + n, '_blank', 'noopener,noreferrer'); }
+    if (n) { window.open('https://wa.me/' + n + '?text=' + encodeURIComponent('¡Hola Umbra! Quiero contactarlos 🙌'),'_blank', 'noopener,noreferrer'); }
     else { var c = $('#contacto'); if (c) c.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); $('#form input[name=nombre]').focus({ preventScroll: true }); }
   });
   var form = $('#form');
@@ -86,12 +86,16 @@
     var msg = $('.form-msg', form);
     var ok = form.nombre.value.trim() && form.contacto.value.trim() && form.adulto.checked;
     if (!ok) { msg.textContent = 'Completa tu nombre, cómo contactarte y confirma que eres mayor de 18 años.'; return; }
-    // El envío real se activa configurando data-endpoint (POST) en el formulario.
-    var ep = form.dataset.endpoint;
-    if (!ep) { msg.textContent = 'Formulario en modo demostración: aún no está conectado a un destino de envío.'; return; }
-    fetch(ep, { method: 'POST', body: new FormData(form), referrerPolicy: 'no-referrer' })
-      .then(function (r) { msg.textContent = r.ok ? 'Gracias. Te responderemos con discreción.' : 'No se pudo enviar. Inténtalo de nuevo.'; if (r.ok) form.reset(); })
-      .catch(function () { msg.textContent = 'No se pudo enviar. Inténtalo de nuevo.'; });
+    // El formulario se envía por WhatsApp al número de data-w.
+    var n = (form.dataset.w || '').replace(/\D/g, '');
+    var texto = '¡Hola Umbra! Quiero contactarlos.\n\n' +
+      'Nombre o alias: ' + form.nombre.value.trim() + '\n' +
+      'Contacto preferido: ' + form.contacto.value.trim() + '\n' +
+      'Mensaje: ' + (form.mensaje.value.trim() || '(sin mensaje)') + '\n' +
+      'Mayor de 18 años: sí';
+    window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(texto), '_blank', 'noopener,noreferrer');
+    msg.textContent = 'Te abrimos WhatsApp para que envíes el mensaje.';
+    form.reset();
   });
 
   /* ---------- Animación ---------- */

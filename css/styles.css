@@ -171,3 +171,17 @@ form .btn{margin-top:4px;justify-self:start}
 
 /* Fotos de prueba: integración suave con la paleta negro/dorado */
 .scene>img,.card img,.svc-prev img{filter:saturate(.85) contrast(1.05) brightness(.9)}
+
+/* Botón flotante de WhatsApp */
+.wa-float{position:fixed;right:20px;bottom:20px;z-index:60;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#25D366;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.wa-float:hover{transform:scale(1.08);box-shadow:0 8px 26px rgba(0,0,0,.5)}
+.wa-float:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media(max-width:600px){.wa-float{right:14px;bottom:14px}}
+
+/* WhatsApp: desliz con texto al pasar el mouse */
+.wa-float{width:auto;min-width:58px;padding:0 14px;border-radius:29px;overflow:hidden;text-decoration:none;font:600 15px/1 var(--body);white-space:nowrap}
+.wa-float svg{flex:none}
+.wa-label{max-width:0;opacity:0;margin-left:0;overflow:hidden;transition:max-width .45s var(--ease),opacity .3s var(--ease),margin-left .45s var(--ease)}
+.wa-float:hover .wa-label,.wa-float:focus-visible .wa-label{max-width:160px;opacity:1;margin-left:10px}
+.wa-float:hover{transform:none}
+@media(hover:none){.wa-label{display:none}}
